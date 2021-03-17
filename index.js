@@ -1,11 +1,20 @@
 const nodemailer = require('nodemailer')
 require('dotenv').config()
 
-const mailTransporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL,
     pass: process.env.PASSWORD
+  }
+})
+
+// verify connection configuration
+transporter.verify(function (error, success) {
+  if (error) {
+    console.log(error)
+  } else {
+    console.log('Server is ready to take our messages')
   }
 })
 
@@ -16,10 +25,11 @@ const mailDetails = {
   text: 'Mailing from NODE'
 }
 
-mailTransporter.sendMail(mailDetails, (err, data) => {
+transporter.sendMail(mailDetails, (err, data) => {
   if (err) {
     console.log(err)
-  } else {
-    console.log(data)
   }
+
+  console.log(data)
+  console.log('Email sent succesfully.')
 })
